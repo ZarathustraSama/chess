@@ -6,7 +6,7 @@ class Piece
     @position = position
   end
 
-  def move(position)
-    @position = position
+  def move(position, move)
+    @position = [position[0] + move[0], position[1] + move[1]]
   end
 end
