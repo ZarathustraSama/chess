@@ -2,9 +2,10 @@
 
 # Every component of the board will inherit this class
 class Piece
-  def initialize(position)
+  def initialize(position, color)
     @position = position
     @initial_position = position
+    @color = color
   end
 
   def move(position, move)
