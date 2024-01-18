@@ -3,6 +3,8 @@
 require_relative './piece'
 
 class Knight<Piece
+  attr_accessor :moves
+
   def initialize
     super
     @moves = [[1, 2], [1, -2], [2, 1], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]

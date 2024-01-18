@@ -2,6 +2,9 @@
 
 # Every component of the board will inherit this class
 class Piece
+  attr_reader :color, :initial_position
+  attr_accessor :position
+
   def initialize(position, color)
     @position = position
     @initial_position = position
