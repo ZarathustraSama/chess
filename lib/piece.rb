@@ -4,6 +4,7 @@
 class Piece
   def initialize(position)
     @position = position
+    @initial_position = position
   end
 
   def move(position, move)
