@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
+require_relative './board'
+
 class Game
+  def initialize
+    @board = Board.new
+  end
+
   def check?
 
   end
