@@ -1,25 +1,19 @@
 # frozen_string_literal: true
 
-require_relative './board'
-
 class Game
-  def initialize
-    @board = Board.new
-  end
-
-  def check?
+  def check?(board)
 
   end
 
-  def game_over?
+  def game_over?(board)
     mate? || stalemate?
   end
 
-  def mate?
+  def mate?(board)
 
   end
 
-  def stalemate?
+  def stalemate?(board)
 
   end
 end
