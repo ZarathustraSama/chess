@@ -26,16 +26,20 @@ class Board
     add_pawns
   end
 
+  def find_king(color)
+    @board.each { |elem| return elem&.position if elem.class.name == 'King' && elem.color == color}
+  end
+
   private
 
   def add_kings
-    add('King', [3, 0], 'Black')
-    add('King', [3, 7], 'White')
+    add('King', [4, 0], 'Black')
+    add('King', [4, 7], 'White')
   end
 
   def add_queens
-    add('Queen', [4, 0], 'Black')
-    add('Queen', [4, 7], 'White')
+    add('Queen', [3, 0], 'Black')
+    add('Queen', [3, 7], 'White')
   end
 
   def add_bishops
