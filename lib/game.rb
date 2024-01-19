@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
 class Game
-  attr_accessor :player
+  def check?
 
-  def initialize
-    @player = nil
   end
 
-  def set_player(color)
-    return 'White' if @player.nil?
-
-    @player.white? ? 'Black' : 'White'
+  def game_over?
+    mate? || stalemate?
   end
 
-  private
+  def mate?
 
-  def white?
-    @player == 'White'
+  end
+
+  def stalemate?
+
   end
 end
