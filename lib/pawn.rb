@@ -7,8 +7,8 @@ class Pawn<Piece
 
   def initialize(*args)
     super
-    @move = [0, 1]
-    @s_move = [0, 2]
-    @capture_move = [1, 1]
+    @normal_move = [0, 1]
+    @super_move = [0, 2]
+    @moves = [1, 1] # For simplicity it has the same name of the other pieces
   end
 end
