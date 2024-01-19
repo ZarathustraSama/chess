@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Game
-  attr_accessor :player_1, :player_2
+  attr_accessor :player
 
   def initialize
     @player = nil
