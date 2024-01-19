@@ -2,7 +2,7 @@
 
 require_relative './piece'
 
-class Quenn<Piece
+class Queen<Piece
   attr_accessor :moves
 
   def initialize
