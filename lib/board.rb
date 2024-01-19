@@ -27,7 +27,7 @@ class Board
   end
 
   def find_king(color)
-    @board.each { |elem| return elem&.position if elem.class.name == 'King' && elem.color == color}
+    @board.flatten.compact.select { |piece| piece.class.name == 'King' && piece.color == color}.first.position
   end
 
   private
