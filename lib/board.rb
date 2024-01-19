@@ -33,32 +33,32 @@ class Board
   private
 
   def add_kings
-    add('King', [4, 0], 'Black')
-    add('King', [4, 7], 'White')
+    add('King', [0, 4], 'Black')
+    add('King', [7, 4], 'White')
   end
 
   def add_queens
-    add('Queen', [3, 0], 'Black')
-    add('Queen', [3, 7], 'White')
+    add('Queen', [0, 3], 'Black')
+    add('Queen', [7, 3], 'White')
   end
 
   def add_bishops
-    add('Bishop', [2, 0], 'Black')
-    add('Bishop', [5, 0], 'Black')
-    add('Bishop', [2, 7], 'White')
-    add('Bishop', [5, 7], 'White')
+    add('Bishop', [0, 2], 'Black')
+    add('Bishop', [0, 5], 'Black')
+    add('Bishop', [7, 2], 'White')
+    add('Bishop', [7, 5], 'White')
   end
 
   def add_knights
-    add('Knight', [1, 0], 'Black')
-    add('Knight', [6, 0], 'Black')
-    add('Knight', [1, 7], 'White')
-    add('Knight', [6, 7], 'White')
+    add('Knight', [0, 1], 'Black')
+    add('Knight', [0, 6], 'Black')
+    add('Knight', [7, 1], 'White')
+    add('Knight', [7, 6], 'White')
   end
 
   def add_rooks
     add('Rook', [0, 0], 'Black')
-    add('Rook', [7, 0], 'Black')
+    add('Rook', [0, 7], 'Black')
     add('Rook', [7, 0], 'White')
     add('Rook', [7, 7], 'White')
   end
