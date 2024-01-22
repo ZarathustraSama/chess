@@ -9,6 +9,7 @@ class Pawn<Piece
     super
     @normal_move = self.color == 'White' ? [-1, 0] : [1, 0]
     @super_move = self.color == 'White' ? [-2, 0] : [2, 0]
-    @moves = self.color == 'White' ? [[-1, -1], [-1, 1]] : [[1, 1], [1, -1]] # For simplicity it has the same name of the other pieces
+    # For simplicity it has the same name of the other pieces
+    @moves = self.color == 'White' ? [[-1, -1], [-1, 1]] : [[1, 1], [1, -1]]
   end
 end
