@@ -7,6 +7,6 @@ class Bishop<Piece
 
   def initialize(*args)
     super
-    @moves = [*-7..-1, *1..7].map { |elem| [elem, elem] } + [*-7..-1, *1..7].map { |elem| [elem, -elem] }
+    @moves = []
   end
 end

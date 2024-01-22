@@ -7,6 +7,6 @@ class Rook<Piece
 
   def initialize(*args)
     super
-    @moves = [*-7..-1, *1..7].map { |element| [element, 0] } + [*-7..-1, *1..7].map { |element| [0, element] }
+    @moves = []
   end
 end
