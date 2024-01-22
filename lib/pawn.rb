@@ -7,8 +7,8 @@ class Pawn<Piece
 
   def initialize(*args)
     super
-    @normal_move = [0, 1]
-    @super_move = [0, 2]
+    @normal_move = self.color == 'White' ? [-1, 0] : [1, 0]
+    @super_move = self.color == 'White' ? [-2, 0] : [2, 0]
     @moves = self.color == 'White' ? [[-1, -1], [-1, 1]] : [[1, 1], [1, -1]] # For simplicity it has the same name of the other pieces
   end
 end
