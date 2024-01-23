@@ -2,7 +2,8 @@
 
 require_relative './piece'
 
-class Rook<Piece
+# The rook piece
+class Rook < Piece
   attr_accessor :moves
 
   def initialize(*args)
