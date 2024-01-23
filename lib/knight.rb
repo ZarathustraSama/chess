@@ -2,7 +2,8 @@
 
 require_relative './piece'
 
-class Knight<Piece
+# The knight piece
+class Knight < Piece
   attr_accessor :moves
 
   def initialize(*args)
