@@ -12,7 +12,7 @@ class Rook < Piece
     @moves = []
   end
 
-  def create_rook_moves(board)
+  def rook_moves(board)
     m = Move.new
     m.x_moves(board) + m.y_moves(board)
   end

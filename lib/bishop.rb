@@ -12,7 +12,7 @@ class Bishop < Piece
     @moves = []
   end
 
-  def create_bishop_moves(board)
+  def bishop_moves(board)
     m = Move.new
     m.positive_xy_moves(board) + m.negative_xy_moves(board)
   end
