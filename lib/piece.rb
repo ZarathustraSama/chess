@@ -15,19 +15,11 @@ class Piece
     [position[0] + move[0], position[1] + move[1]]
   end
 
-  def create_rook_moves(board)
-    create_x_moves(board) + create_y_moves(board)
+  def simulate_all_moves(moves)
+    moves.map do |move|
+      move(@position, move)
+    end
   end
-
-  def create_bishop_moves(board)
-    create_positive_xy_moves(board) + create_negative_xy_moves(board)
-  end
-
-  def create_queen_moves(board)
-    create_rook_moves(board) + create_bishop_moves(board)
-  end
-
-  private
 
   def create_x_moves(board)
     create_positive_x_moves(board) + create_negative_x_moves(board)
