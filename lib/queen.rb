@@ -1,6 +1,7 @@
-# frozen_literal_string: true
+# frozen_string_literal: true
 
 require_relative './piece'
+require_relative './move'
 
 # The queen piece
 class Queen < Piece
@@ -9,5 +10,10 @@ class Queen < Piece
   def initialize(*args)
     super
     @moves = []
+  end
+
+  def create_queen_moves(board)
+    m = Move.new
+    m.x_moves(board) + m.y_moves(board) + m.positive_xy_moves(board) + m.negative_xy_moves(board)
   end
 end

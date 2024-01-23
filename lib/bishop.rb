@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './piece'
+require_relative '.move'
 
 # The bishop piece
 class Bishop < Piece
@@ -9,5 +10,10 @@ class Bishop < Piece
   def initialize(*args)
     super
     @moves = []
+  end
+
+  def create_bishop_moves(board)
+    m = Move.new
+    m.positive_xy_moves(board) + m.negative_xy_moves(board)
   end
 end
