@@ -18,7 +18,7 @@ class Piece
 
   def simulate_all_moves(moves)
     moves.map do |move|
-      move(@position, move)
+      move(move)
     end
   end
 end
