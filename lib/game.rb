@@ -25,7 +25,7 @@ class Game
 
   def move_piece(piece, move)
     from = piece.position
-    to = piece.move(old_position, move)
+    to = piece.move(move)
     @board.board[from[0]][from[1]] = EMPTY
     @board.board[to[0]][to[1]] = piece
   end
