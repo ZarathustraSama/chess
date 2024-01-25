@@ -2,13 +2,14 @@
 
 # Every component of the board will inherit this class
 class Piece
-  attr_reader :color, :initial_position
+  attr_reader :color, :initial_position, :symbol
   attr_accessor :position
 
-  def initialize(position, color)
+  def initialize(position, color, symbol)
     @position = position
     @initial_position = position
     @color = color
+    @symbol = symbol
   end
 
   def move(position, move)
@@ -19,64 +20,5 @@ class Piece
     moves.map do |move|
       move(@position, move)
     end
-  end
-
-  def create_x_moves(board)
-    create_positive_x_moves(board) + create_negative_x_moves(board)
-  end
-
-  def create_y_moves(board)
-    create_positive_y_moves(board) + create_negative_y_moves(board)
-  end
-
-  def create_positive_y_moves(board)
-    extend_moves(board, [-1, 0])
-  end
-
-  def create_negative_y_moves(board)
-    extend_moves(board, [1, 0])
-  end
-
-  def create_positive_x_moves(board)
-    extend_moves(board, [0, 1])
-  end
-
-  def create_negative_x_moves(board)
-    extend_moves(board, [0, -1])
-  end
-
-  def create_positive_xy_moves(board)
-    create_first_quadrant_moves(board) + create_third_quadrant_moves(board)
-  end
-
-  def create_negative_xy_moves(board)
-    create_second_quadrant_moves(board) + create_fourth_quadrant_moves(board)
-  end
-
-  def create_first_quadrant_moves(board)
-    extend_moves(board, [-1, 1])
-  end
-
-  def create_second_quadrant_moves(board)
-    extend_moves(board, [-1, -1])
-  end
-
-  def create_third_quadrant_moves(board)
-    extend_moves(board, [1, -1])
-  end
-
-  def create_fourth_quadrant_moves(board)
-    extend_moves(board, [1, 1])
-  end
-
-  def extend_moves(board, move)
-    moves = []
-    new_position = move(@position, move)
-    while board.inside?(new_position) && board.empty?(new_position)
-      moves << new_position
-      new_position = move(new_position, move)
-    end
-    moves << move(new_position, move)
-    moves
   end
 end
