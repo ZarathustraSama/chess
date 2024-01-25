@@ -12,8 +12,8 @@ class Piece
     @symbol = symbol
   end
 
-  def move(position, move)
-    [position[0] + move[0], position[1] + move[1]]
+  def move(move)
+    [@position[0] + move[0], @position[1] + move[1]]
   end
 
   def simulate_all_moves(moves)
