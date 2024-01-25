@@ -8,10 +8,31 @@ class Pawn < Piece
 
   def initialize(*args)
     super
-    @normal_move = @color == 'White' ? [-1, 0] : [1, 0]
-    @super_move = @color == 'White' ? [-2, 0] : [2, 0]
-    # For simplicity it has the same name of the other pieces
-    @moves = @color == 'White' ? [[-1, -1], [-1, 1]] : [[1, 1], [1, -1]]
+    @moves = []
+  end
+
+  def create_moves
+    @moves = @color == 'White' ? generate_w_moves : generate_b_moves
+  end
+
+  def create_w_legal_moves
+    moves = [[-1, 0], [-1, -1], [-1, 1]]
+    moves << [-2, 0] if @position == @initial_position
+    moves
+  end
+
+  def create_w_capture_moves
+    [[-1, -1], [-1, 1]]
+  end
+
+  def create_b_legal_moves
+    moves = [[1, 0], [1, 1], [1, -1]]
+    moves << [2, 0] if @position == @initial_position
+    moves
+  end
+
+  def create_b_capture_moves
+    [[1, 1], [1, -1]]
   end
 
   def promotable?
