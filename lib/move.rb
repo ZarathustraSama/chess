@@ -50,14 +50,18 @@ class Move
     create_moves(board, [1, 1])
   end
 
-  def create_moves(board, move)
+  def create_moves(board, position, move)
     moves = []
-    new_position = move(@position, move)
+    new_position = move(position, move)
     while board.inside?(new_position) && board.empty?(new_position)
       moves << new_position
       new_position = move(new_position, move)
     end
     moves << move(new_position, move)
     moves
+  end
+
+  def move(position, move)
+    [position[0] + move[0], position[1] + move[1]]
   end
 end
