@@ -4,10 +4,8 @@ require_relative './piece'
 
 # The knight piece
 class Knight < Piece
-  attr_accessor :moves
-
-  def initialize(*args)
-    super
-    @moves = [[1, 2], [1, -2], [2, 1], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]
+  def generate_legal_moves(board)
+    m = [[1, 2], [1, -2], [2, 1], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]
+    @moves = m.map { |move| move(move) if board.inside?(move(move)) && board.empty?(move(move)) }.compact
   end
 end
