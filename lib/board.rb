@@ -12,18 +12,18 @@ WHITE = 'White'
 BLACK = 'Black'
 
 PIECES = {
-  w_king: '\u2654',
-  w_queen: '\u2655',
-  w_rook: '\u2656',
-  w_bishop: '\u2657',
-  w_knight: '\u2658',
-  w_pawn: '\u2659',
-  b_king: '\u265A',
-  b_queen: '\u265B',
-  b_rook: '\u265C',
-  b_bishop: '\u265D',
-  b_knight: '\u265E',
-  b_pawn: '\u265F'
+  w_king: "\u2654",
+  w_queen: "\u2655",
+  w_rook: "\u2656",
+  w_bishop: "\u2657",
+  w_knight: "\u2658",
+  w_pawn: "\u2659",
+  b_king: "\u265A",
+  b_queen: "\u265B",
+  b_rook: "\u265C",
+  b_bishop: "\u265D",
+  b_knight: "\u265E",
+  b_pawn: "\u265F"
 }.freeze
 
 # The chess board
@@ -49,16 +49,16 @@ class Board
   end
 
   def mate?(color)
-    check?(color) && find_all_legal_moves(color).none?
+    check?(color) && !legal_moves_left?(color)
   end
 
   def check?(color)
     opposite_color = color == WHITE ? BLACK : WHITE
-    simulate_all_positions(find_same_pieces(opposite_color)).include?(find_king(color))
+    simulate_capture_positions(opposite_color).include?(find_king_position(color))
   end
 
   def stalemate?(color)
-    !check?(color) && find_all_legal_moves(color).none?
+    !check?(color) && !legal_moves_left?(color)
   end
 
   def empty?(position)
@@ -69,9 +69,35 @@ class Board
     position[0] >= 0 && position[0] < 8 && position[1] >= 0 && position[1] < 8
   end
 
-  def draw_board
-    @board.each { |_row| draw_row }
+  def move_piece(piece, position)
+    @board[piece.position[0]][piece.position[1]] = EMPTY
+    add(piece.class.name, position, piece.color, piece.symbol)
   end
+
+  def draw_board
+    # @board.each { |_row| draw_row }
+  end
+
+  def short_castling
+    # king hasn't moved
+    # rook hasn't moved
+    # king is not in check
+    # squares between are not "check-zones"
+    # squares between are empty
+  end
+
+  def long_castling
+    # same as above, just one extra square to check
+  end
+
+  def en_passante
+    # capturing pawn has advanced 3 ranks
+    # pawn-to-be-captured has made a double step next to such pawn
+    # capture chance is only the turn immediately to this double step
+  end
+
+  # def repetition_of_moves_rule?
+  # def 50_moves_rule?
 
   private
 
@@ -111,50 +137,33 @@ class Board
     [*0..7].map { |i| add('Pawn', [6, i], 'White', PIECES[:w_pawn]) }
   end
 
-  def add(piece, position, color)
-    @board[position[0]][position[1]] = Object.const_get(piece).new(position, color)
+  def add(piece, position, color, symbol)
+    @board[position[0]][position[1]] = Object.const_get(piece).new(position, color, symbol)
   end
 
-  def find_king(color)
+  def find_king_position(color)
     @board.flatten.compact.select { |piece| piece.instance_of?(::King) && piece.color == color }.first.position
+  end
+
+  def simulate_capture_positions(color)
+    find_pieces(color).map do |piece|
+      if piece.instance_of?(::Pawn)
+        piece.generate_c_moves(self)
+      else
+        piece.generate_legal_moves(self)
+      end
+    end
   end
 
   def find_pieces(color)
     @board.flatten.compact.select { |piece| piece.color == color }
   end
 
-  def simulate_all_positions(pieces)
-    pieces.map { |piece| piece.simulate_all_moves(pieces.moves) }.flatten(1)
-  end
-
-  def find_all_legal_moves(color)
-    find_pieces(color).map do |piece|
-      check_legal_moves(piece)
+  def legal_moves_left?(color)
+    find_pieces(color).each do |piece|
+      piece.moves.each { |move| return true unless piece.simulate_new_board(self, move).check?(color) }
     end
-  end
-
-  def check_legal_moves(piece)
-    find_moves(piece).select do |move|
-      fake_board = Board.new
-      fake_board.board = @board.map(&:dup)
-      fake_board.move_piece(piece, move)
-      move unless fake_board.check?(color)
-    end
-  end
-
-  def find_moves(piece)
-    case piece
-    when instance_of?(::Rook)
-      piece.create_rook_moves(@board)
-    when instance_of?(::Bishop)
-      piece.create_bishop_moves(@board)
-    when instance_of?(::Queen)
-      piece.create_queen_moves(@board)
-    when instance_of?(::Pawn)
-      piece.create_moves
-    else
-      piece.moves
-    end
+    false
   end
 
   def draw_row; end
