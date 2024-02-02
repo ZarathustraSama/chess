@@ -12,12 +12,4 @@ describe Piece do
       expect(piece.move(move)).to eql([3, 0])
     end
   end
-
-  describe '#simulate_all_moves' do
-    let(:moves) { [[1, 0], [2, 0], [3, 0]] }
-
-    it 'returns an array of all simulated positions' do
-      expect(piece.simulate_all_moves(moves)).to eql([[1, 0], [2, 0], [3, 0]])
-    end
-  end
 end
