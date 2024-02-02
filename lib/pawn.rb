@@ -2,40 +2,61 @@
 
 require_relative './piece'
 
+WHITE_STEPS = [[-1, 0], [-2, 0]].freeze
+WHITE_CAPTURES = [[-1, -1], [-1, 1]].freeze
+BLACK_STEPS = [[1, 0], [2, 0]].freeze
+BLACK_CAPTURES = [[1, 1], [1, -1]].freeze
+
 # The pawn piece
 class Pawn < Piece
-  attr_accessor :move, :s_move, :capture_move
+  attr_accessor :double_step_taken
 
   def initialize(*args)
     super
-    @moves = []
+    double_step_taken = false
   end
 
-  def create_moves
-    @moves = @color == 'White' ? generate_w_moves : generate_b_moves
+  def generate_legal_moves(board)
+    @moves = @color == 'White' ? w_moves(board) : b_moves(board)
   end
 
-  def create_w_legal_moves
-    moves = [[-1, 0], [-1, -1], [-1, 1]]
-    moves << [-2, 0] if @position == @initial_position
-    moves
+  def generate_c_moves(board)
+    @color == 'White' ? capture(board, WHITE_CAPTURES) : capture(board, BLACK_CAPTURES)
   end
 
-  def create_w_capture_moves
-    [[-1, -1], [-1, 1]]
+  def can_promote?
+    @color == 'White' ? @position[0].zero? : @position[0] == 7
   end
 
-  def create_b_legal_moves
-    moves = [[1, 0], [1, 1], [1, -1]]
-    moves << [2, 0] if @position == @initial_position
-    moves
+  private
+
+  def w_moves(board)
+    step(board, WHITE_STEPS) + capture(board, WHITE_CAPTURES)
   end
 
-  def create_b_capture_moves
-    [[1, 1], [1, -1]]
+  def b_moves(board)
+    step(board, BLACK_STEPS) + capture(board, BLACK_CAPTURES)
   end
 
-  def promotable?
-    (@color == 'White' && @position[0].zero?) || (@color == 'Black' && @position[0] == 7)
+  def step(board, moves)
+    m = []
+    m << move(moves[0]) if board.empty?(move(moves[0]))
+    m << move(moves[1]) if double_step? && board.empty?(move(moves[1]))
+    m
+  end
+
+  def capture(board, moves)
+    m = []
+    moves.each do |move|
+      c_square = move(move)
+      if board.inside?(c_square) && !board.empty?(c_square) && board.board[c_square[0]][c_square[1]].color != @color
+        m << c_square
+      end
+    end
+    m
+  end
+
+  def double_step?
+    @position == @initial_position
   end
 end
