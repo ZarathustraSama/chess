@@ -4,10 +4,8 @@ require_relative './piece'
 
 # The king piece
 class King < Piece
-  attr_accessor :moves
-
-  def initialize(*args)
-    super
-    @moves = [-1, 1].map { |elem| [0, elem] } + [-1, 1].map { |elem| [elem, 0] } + [-1, 1].map { |elem| [elem, elem] } + [-1, 1].map { |elem| [elem, -elem] }
+  def generate_legal_moves(board)
+    m = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [-1, 1], [1, -1]]
+    @moves = m.map { |move| move(move) if board.inside?(move(move)) && board.empty?(move(move)) }.compact
   end
 end
