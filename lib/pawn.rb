@@ -41,7 +41,7 @@ class Pawn < Piece
   def step(board, moves)
     m = []
     m << move(moves[0]) if board.empty?(move(moves[0]))
-    m << move(moves[1]) if double_step? && board.empty?(move(moves[1]))
+    m << move(moves[1]) if can_double_step? && board.empty?(move(moves[1]))
     m
   end
 
@@ -49,12 +49,33 @@ class Pawn < Piece
     m = []
     moves.each do |move|
       c_square = move(move)
-      m << c_square if board.inside?(c_square) && !board.empty?(c_square) && board.color?(c_square) != @color
+      m << c_square if (board.inside?(c_square) && !board.empty?(c_square) && board.color?(c_square) != @color)
     end
+    m + en_passante(board, moves)
     m
   end
 
-  def double_step?
+  def can_double_step?
     @position == @initial_position
+  end
+
+  def double_step_taken!
+    @double_step_taken = true
+  end
+
+  def en_passante(board)
+    # capturing pawn has advanced 3 ranks
+    if @position[0] - @initial_position[0] == -3 || 3
+      square1 = board[@position[0]][@position[1] + 1]
+      square2 = board[@position[0]][@position[1] - 1]
+
+      # pawn-to-be-captured has made a double step next to such pawn
+      # capture chance is only the turn immediately to this double step
+      if square1.instance_of?(::Pawn) && square1&.double_step_taken
+        @color == BLACK ? move([1, 1]) : move([-1, 1])
+      elsif square2.instance_of?(::Pawn) && square2&.double_step_taken
+        @color == BLACK ? move([1, -1]) : move([-1, -1])
+      end
+    end
   end
 end
