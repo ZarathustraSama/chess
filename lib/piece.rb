@@ -11,10 +11,15 @@ class Piece
     @color = color
     @symbol = symbol
     @moves = []
+    @moved = false
   end
 
   def move(move, position = @position)
     [position[0] + move[0], position[1] + move[1]]
+  end
+
+  def moved!
+    @moved = true
   end
 
   # Utility method for rook, bishop and queen moves
