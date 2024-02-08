@@ -13,7 +13,7 @@ class Pawn < Piece
 
   def initialize(*args)
     super
-    double_step_taken = false
+    @double_step_taken = false
   end
 
   def generate_legal_moves(board)
@@ -49,9 +49,9 @@ class Pawn < Piece
     m = []
     moves.each do |move|
       c_square = move(move)
-      m << c_square if (board.inside?(c_square) && !board.empty?(c_square) && board.color?(c_square) != @color)
+      m << c_square if board.inside?(c_square) && !board.empty?(c_square) && board.color?(c_square) != @color
     end
-    m + en_passante(board, moves)
+    en_passante(board, moves)
     m
   end
 
@@ -65,17 +65,22 @@ class Pawn < Piece
 
   def en_passante(board)
     # capturing pawn has advanced 3 ranks
-    if @position[0] - @initial_position[0] == -3 || 3
-      square1 = board[@position[0]][@position[1] + 1]
-      square2 = board[@position[0]][@position[1] - 1]
+    return unless advanced_3_ranks?
 
-      # pawn-to-be-captured has made a double step next to such pawn
-      # capture chance is only the turn immediately to this double step
-      if square1.instance_of?(::Pawn) && square1&.double_step_taken
-        @color == BLACK ? move([1, 1]) : move([-1, 1])
-      elsif square2.instance_of?(::Pawn) && square2&.double_step_taken
-        @color == BLACK ? move([1, -1]) : move([-1, -1])
-      end
+    # pawn-to-be-captured has made a double step next to such pawn
+    # capture chance is only the turn immediately to this double step
+    if can_en_passante?(board[@position[0]][@position[1] + 1])
+      @color == BLACK ? move([1, 1]) : move([-1, 1])
+    elsif can_en_passante?(board[@position[0]][@position[1] - 1])
+      @color == BLACK ? move([1, -1]) : move([-1, -1])
     end
+  end
+
+  def can_en_passante?(square)
+    square.instance_of?(::Pawn) && square&.double_step_taken
+  end
+
+  def advanced_3_ranks?
+    (@position[0] - @initial_position[0]) == (-3 || 3)
   end
 end
