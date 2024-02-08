@@ -86,24 +86,6 @@ class Board
     # @board.each { |_row| draw_row }
   end
 
-  def short_castling
-    # king hasn't moved
-    # rook hasn't moved
-    # king is not in check
-    # squares between are not "check-zones"
-    # squares between are empty
-  end
-
-  def long_castling
-    # same as above, just one extra square to check
-  end
-
-  def en_passante
-    # capturing pawn has advanced 3 ranks
-    # pawn-to-be-captured has made a double step next to such pawn
-    # capture chance is only the turn immediately to this double step
-  end
-
   # def repetition_of_moves_rule?
   # def 50_moves_rule?
 
