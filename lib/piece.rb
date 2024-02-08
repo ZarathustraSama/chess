@@ -28,12 +28,4 @@ class Piece
     moves << next_p if board.inside?(next_p) && board.board[next_p[0]][next_p[1]].color != @color
     moves
   end
-
-  # Returns a fake board where the piece has been moved
-  def simulate_new_board(board, position)
-    b = Marshal.load(Marshal.dump(board))
-    b.board[@position[0]][@position[1]] = nil
-    b.board[position[0]][position[1]] = self
-    b
-  end
 end
