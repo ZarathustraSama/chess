@@ -49,9 +49,7 @@ class Pawn < Piece
     m = []
     moves.each do |move|
       c_square = move(move)
-      if board.inside?(c_square) && !board.empty?(c_square) && board.board[c_square[0]][c_square[1]].color != @color
-        m << c_square
-      end
+      m << c_square if board.inside?(c_square) && !board.empty?(c_square) && board.color?(c_square) != @color
     end
     m
   end
