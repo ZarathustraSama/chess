@@ -44,6 +44,10 @@ class Board
     add_pawns
   end
 
+  def update_moves(color)
+    find_pieces(color).each { |piece| piece.generate_legal_moves(self) }
+  end
+
   def game_over?(color)
     mate?(color) || stalemate?(color)
   end
@@ -54,7 +58,7 @@ class Board
 
   def check?(color)
     opposite_color = color == WHITE ? BLACK : WHITE
-    simulate_capture_positions(opposite_color).include?(find_king_position(color))
+    simulate_capture_positions(opposite_color).flatten(1).include?(find_king_position(color))
   end
 
   def stalemate?(color)
@@ -63,6 +67,10 @@ class Board
 
   def empty?(position)
     @board[position[0]][position[1]] == EMPTY
+  end
+
+  def color?(position)
+    @board[position[0]][position[1]].color unless empty?(position)
   end
 
   def inside?(position)
@@ -145,6 +153,10 @@ class Board
     @board.flatten.compact.select { |piece| piece.instance_of?(::King) && piece.color == color }.first.position
   end
 
+  def find_pieces(color)
+    @board.flatten.compact.select { |piece| piece.color == color }
+  end
+
   def simulate_capture_positions(color)
     find_pieces(color).map do |piece|
       if piece.instance_of?(::Pawn)
@@ -155,15 +167,20 @@ class Board
     end
   end
 
-  def find_pieces(color)
-    @board.flatten.compact.select { |piece| piece.color == color }
-  end
-
   def legal_moves_left?(color)
     find_pieces(color).each do |piece|
-      piece.moves.each { |move| return true unless piece.simulate_new_board(self, move).check?(color) }
+      piece.moves.each do |move|
+        return true unless simulate_new_board(piece, move).check?(color)
+      end
     end
     false
+  end
+
+  # Returns a fake board where the piece has been moved
+  def simulate_new_board(piece, move)
+    b = Marshal.load(Marshal.dump(self))
+    b.move_piece(piece, move)
+    b
   end
 
   def draw_row; end
