@@ -13,7 +13,7 @@ class King < Piece
 
   def short_castling?(board)
     rook = @color == BLACK ? board.board[0][7] : board.board[7][7]
-    squares = @color == BLACK ? [[0, 5], [0, 6], [0, 7]] : [[7, 5], [7, 6], [7, 7]]
+    squares = @color == BLACK ? [[0, 5], [0, 6]] : [[7, 5], [7, 6]]
     return false unless rook.instance_of?(::Rook)
 
     castling?(board, rook, squares)
@@ -22,7 +22,7 @@ class King < Piece
   def long_castling?(board)
     # same as above, just one extra square to check
     rook = @color == BLACK ? board.board[0][0] : board.board[7][0]
-    squares = @color == BLACK ? [[0, 3], [0, 2], [0, 1], [0, 0]] : [[7, 3], [7, 2], [7, 1], [7, 0]]
+    squares = @color == BLACK ? [[0, 3], [0, 2], [0, 1]] : [[7, 3], [7, 2], [7, 1]]
     return false unless rook.instance_of?(::Rook)
 
     castling?(board, rook, squares)
