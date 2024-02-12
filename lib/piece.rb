@@ -3,7 +3,7 @@
 # Every component of the board will inherit this class
 class Piece
   attr_reader :color, :initial_position, :symbol
-  attr_accessor :position, :moves
+  attr_accessor :position, :moves, :moved
 
   def initialize(position, color, symbol)
     @position = position
@@ -11,14 +11,15 @@ class Piece
     @color = color
     @symbol = symbol
     @moves = []
+    @moved = false
   end
 
   def move(move, position = @position)
     [position[0] + move[0], position[1] + move[1]]
   end
 
-  def moved?
-    @position != @initial_position
+  def moved!
+    @moved = true
   end
 
   # Utility method for rook, bishop and queen moves
