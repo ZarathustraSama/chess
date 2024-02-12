@@ -82,10 +82,6 @@ class Board
     add(piece.class.name, position, piece.color, piece.symbol)
   end
 
-  def draw_board
-    # @board.each { |_row| draw_row }
-  end
-
   # def repetition_of_moves_rule?
   # def 50_moves_rule?
 
@@ -164,6 +160,4 @@ class Board
     b.move_piece(piece, move)
     b
   end
-
-  def draw_row; end
 end
