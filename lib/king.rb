@@ -14,6 +14,8 @@ class King < Piece
   def short_castling?(board)
     rook = @color == BLACK ? board.board[0][7] : board.board[7][7]
     squares = @color == BLACK ? [[0, 5], [0, 6], [0, 7]] : [[7, 5], [7, 6], [7, 7]]
+    return false unless rook.instance_of?(::Rook)
+
     castling?(board, rook, squares)
   end
 
@@ -28,7 +30,7 @@ class King < Piece
 
   def castling?(board, rook, squares)
     # king/rook hasn't moved king is not in check
-    return false unless @moved && rook.moved && board.check?(@color)
+    return false unless moved? && rook.moved? && board.check?(@color)
 
     # squares between are not "check-zones" && empty
     b = board.simulate_new_board
