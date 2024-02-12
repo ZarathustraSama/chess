@@ -30,10 +30,10 @@ class King < Piece
 
   def castling?(board, rook, squares)
     # king/rook hasn't moved king is not in check
-    return false unless @moved && rook.moved && board.check?(@color)
+    return false if @moved || rook.moved || board.check?(@color)
 
     # squares between are not "check-zones" && empty
-    b = board.simulate_new_board
+    b = board.simulate_new_board(self, @position)
     squares.each do |move|
       return false unless b.empty?(move)
 
