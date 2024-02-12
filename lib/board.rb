@@ -82,19 +82,33 @@ class Board
     add(piece.class.name, position, piece.color, piece.symbol)
   end
 
+  # Returns a fake board where the piece has been moved
+  def simulate_new_board(piece, move)
+    b = Marshal.load(Marshal.dump(self))
+    b.move_piece(piece, move)
+    b
+  end
+
   # def repetition_of_moves_rule?
   # def 50_moves_rule?
 
   private
+
+  def add_queens
+    add('Queen', [0, 3], 'Black', PIECES[:b_queen])
+    add('Queen', [7, 3], 'White', PIECES[:w_queen])
+  end
 
   def add_kings
     add('King', [0, 4], 'Black', PIECES[:b_king])
     add('King', [7, 4], 'White', PIECES[:w_king])
   end
 
-  def add_queens
-    add('Queen', [0, 3], 'Black', PIECES[:b_queen])
-    add('Queen', [7, 3], 'White', PIECES[:w_queen])
+  def add_rooks
+    add('Rook', [0, 0], 'Black', PIECES[:b_rook])
+    add('Rook', [0, 7], 'Black', PIECES[:b_rook])
+    add('Rook', [7, 0], 'White', PIECES[:w_rook])
+    add('Rook', [7, 7], 'White', PIECES[:w_rook])
   end
 
   def add_bishops
@@ -109,13 +123,6 @@ class Board
     add('Knight', [0, 6], 'Black', PIECES[:b_knight])
     add('Knight', [7, 1], 'White', PIECES[:w_knight])
     add('Knight', [7, 6], 'White', PIECES[:w_knight])
-  end
-
-  def add_rooks
-    add('Rook', [0, 0], 'Black', PIECES[:b_rook])
-    add('Rook', [0, 7], 'Black', PIECES[:b_rook])
-    add('Rook', [7, 0], 'White', PIECES[:w_rook])
-    add('Rook', [7, 7], 'White', PIECES[:w_rook])
   end
 
   def add_pawns
@@ -152,12 +159,5 @@ class Board
       end
     end
     false
-  end
-
-  # Returns a fake board where the piece has been moved
-  def simulate_new_board(piece, move)
-    b = Marshal.load(Marshal.dump(self))
-    b.move_piece(piece, move)
-    b
   end
 end
