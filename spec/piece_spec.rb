@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/piece'
+require_relative '../lib/pieces/piece'
 
 describe Piece do
   subject(:piece) { described_class.new([0, 0], 'Black', '\u265C') }
