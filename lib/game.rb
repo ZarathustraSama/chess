@@ -9,8 +9,8 @@ RANKS = { "1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0 }.freez
 class Game
   attr_accessor :board, :player
 
-  def initialize
-    @board = Board.new
+  def initialize(board = Board.new)
+    @board = board
     @player = nil
   end
 
@@ -25,11 +25,11 @@ class Game
     @player = @player == WHITE ? BLACK : WHITE
   end
 
-  def legal_move?(input)
+  def legal_input?(input)
     move = input.downcase.slice(' ')
     from = to_index(move[0])
     towards = to_index(move[1])
-    @board[from[0]][from[1]]&.moves&.include?(towards)
+    @board.board[from[0]][from[1]]&.moves&.include?(towards)
   end
 
   def promote(pawn, piece)
@@ -52,7 +52,25 @@ class Game
     # end loop
   end
 
+  def draw_board(board = @board.board)
+    puts ''
+    board.each { |row| draw_row(row) }
+    puts ''
+  end
+
   private
+
+  def draw_row(row)
+    row.each do |square|
+      if square.nil?
+        print '| '
+      else
+        print "|#{square.symbol}"
+      end
+    end
+    print '|'
+    puts ''
+  end
 
   # Utility method
   def to_index(string)
