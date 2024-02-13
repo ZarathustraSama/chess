@@ -51,7 +51,7 @@ class Pawn < Piece
       c_square = move(move)
       m << c_square if board.inside?(c_square) && !board.empty?(c_square) && board.color?(c_square) != @color
     end
-    en_passante(board)
+    m << en_passante(board)
     m
   end
 
