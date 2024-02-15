@@ -4,6 +4,11 @@ require_relative './piece'
 
 # The knight piece
 class Knight < Piece
+  def initialize(*args)
+    super
+    @symbol = @color == WHITE ? "\u2658" : "\u265E"
+  end
+
   def generate_legal_moves(board)
     m = [[1, 2], [1, -2], [2, 1], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]
     @moves = m.map do |move|

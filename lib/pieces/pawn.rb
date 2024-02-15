@@ -13,6 +13,7 @@ class Pawn < Piece
 
   def initialize(*args)
     super
+    @symbol = @color == WHITE ? "\u2659" : "\u265F"
     @double_step_taken = false
   end
 

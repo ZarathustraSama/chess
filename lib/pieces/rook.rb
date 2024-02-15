@@ -4,6 +4,11 @@ require_relative './piece'
 
 # The rook piece
 class Rook < Piece
+  def initialize(*args)
+    super
+    @symbol = @color == WHITE ? "\u2656" : "\u265C"
+  end
+
   def generate_legal_moves(board)
     @moves = rook_moves(board)
   end

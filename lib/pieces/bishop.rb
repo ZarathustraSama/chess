@@ -4,6 +4,11 @@ require_relative './piece'
 
 # The bishop piece
 class Bishop < Piece
+  def initialize(*args)
+    super
+    @symbol = @color == WHITE ? "\u2657" : "\u265D"
+  end
+
   def generate_legal_moves(board)
     @moves = bishop_moves(board)
   end

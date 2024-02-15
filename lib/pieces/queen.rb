@@ -4,6 +4,11 @@ require_relative './piece'
 
 # The queen piece
 class Queen < Piece
+  def initialize(*args)
+    super
+    @symbol = @color == WHITE ? "\u2655" : "\u265B"
+  end
+
   # A necessary repetition from the bishop/rook classes in order to avoid object creations
   def generate_legal_moves(board)
     @moves = queen_moves(board)

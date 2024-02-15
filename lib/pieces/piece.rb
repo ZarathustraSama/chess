@@ -5,13 +5,12 @@ class Piece
   attr_reader :color, :initial_position, :symbol
   attr_accessor :position, :moves, :moved
 
-  def initialize(position, color, symbol)
+  def initialize(position, color, moved, moves)
     @position = position
-    @initial_position = position
     @color = color
-    @symbol = symbol
-    @moves = []
     @moved = false
+    @moves = moves
+    @symbol = nil
   end
 
   def move(move, position = @position)
