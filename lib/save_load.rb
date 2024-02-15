@@ -7,7 +7,8 @@ require_relative './board'
 def game_to_json(game)
   JSON.dump ({
     :board => board_to_json(game.board.board),
-    :player => game.player
+    :player => game.player,
+    :moves_to_draw => game.moves_to_draw
   })
 end
 
@@ -25,7 +26,7 @@ end
 
 def game_from_json(game_string)
   data = JSON.load game_string
-  Game.new(load_board(data['board']), data['player'])
+  Game.new(load_board(data['board']), data['player'], data['moves_to_draw'])
 end
 
 def load_board(saved_board)
@@ -42,6 +43,14 @@ def save_game(game)
 
   File.open('saves/game.json', 'w') do |file|
     file.puts game_to_json(game)
+  end
+end
+
+def saved_game?
+  begin
+    !Dir.empty?('saves')
+  rescue Errno::ENOENT
+    false
   end
 end
 
