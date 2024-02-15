@@ -11,21 +11,6 @@ EMPTY = nil
 WHITE = 'White'
 BLACK = 'Black'
 
-PIECES = {
-  w_king: "\u2654",
-  w_queen: "\u2655",
-  w_rook: "\u2656",
-  w_bishop: "\u2657",
-  w_knight: "\u2658",
-  w_pawn: "\u2659",
-  b_king: "\u265A",
-  b_queen: "\u265B",
-  b_rook: "\u265C",
-  b_bishop: "\u265D",
-  b_knight: "\u265E",
-  b_pawn: "\u265F"
-}.freeze
-
 # The chess board
 # Every component that only "snapshots" the board's status, is here
 class Board
@@ -77,6 +62,10 @@ class Board
     position[0] >= 0 && position[0] < 8 && position[1] >= 0 && position[1] < 8
   end
 
+  def add(piece, position, color, moved = false, moves = [])
+    @board[position[0]][position[1]] = Object.const_get(piece).new(position, color, moved, moves)
+  end
+
   def move_piece(piece, position)
     @board[piece.position[0]][piece.position[1]] = EMPTY
     add(piece.class.name, position, piece.color, piece.symbol)
@@ -95,43 +84,39 @@ class Board
   private
 
   def add_queens
-    add('Queen', [0, 3], 'Black', PIECES[:b_queen])
-    add('Queen', [7, 3], 'White', PIECES[:w_queen])
+    add('Queen', [0, 3], 'Black')
+    add('Queen', [7, 3], 'White')
   end
 
   def add_kings
-    add('King', [0, 4], 'Black', PIECES[:b_king])
-    add('King', [7, 4], 'White', PIECES[:w_king])
+    add('King', [0, 4], 'Black')
+    add('King', [7, 4], 'White')
   end
 
   def add_rooks
-    add('Rook', [0, 0], 'Black', PIECES[:b_rook])
-    add('Rook', [0, 7], 'Black', PIECES[:b_rook])
-    add('Rook', [7, 0], 'White', PIECES[:w_rook])
-    add('Rook', [7, 7], 'White', PIECES[:w_rook])
+    add('Rook', [0, 0], 'Black')
+    add('Rook', [0, 7], 'Black')
+    add('Rook', [7, 0], 'White')
+    add('Rook', [7, 7], 'White')
   end
 
   def add_bishops
-    add('Bishop', [0, 2], 'Black', PIECES[:b_bishop])
-    add('Bishop', [0, 5], 'Black', PIECES[:b_bishop])
-    add('Bishop', [7, 2], 'White', PIECES[:w_bishop])
-    add('Bishop', [7, 5], 'White', PIECES[:w_bishop])
+    add('Bishop', [0, 2], 'Black')
+    add('Bishop', [0, 5], 'Black')
+    add('Bishop', [7, 2], 'White')
+    add('Bishop', [7, 5], 'White')
   end
 
   def add_knights
-    add('Knight', [0, 1], 'Black', PIECES[:b_knight])
-    add('Knight', [0, 6], 'Black', PIECES[:b_knight])
-    add('Knight', [7, 1], 'White', PIECES[:w_knight])
-    add('Knight', [7, 6], 'White', PIECES[:w_knight])
+    add('Knight', [0, 1], 'Black')
+    add('Knight', [0, 6], 'Black')
+    add('Knight', [7, 1], 'White')
+    add('Knight', [7, 6], 'White')
   end
 
   def add_pawns
-    [*0..7].map { |i| add('Pawn', [1, i], 'Black', PIECES[:b_pawn]) }
-    [*0..7].map { |i| add('Pawn', [6, i], 'White', PIECES[:w_pawn]) }
-  end
-
-  def add(piece, position, color, symbol)
-    @board[position[0]][position[1]] = Object.const_get(piece).new(position, color, symbol)
+    [*0..7].map { |i| add('Pawn', [1, i], 'Black') }
+    [*0..7].map { |i| add('Pawn', [6, i], 'White') }
   end
 
   def find_king_position(color)
