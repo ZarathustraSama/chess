@@ -18,6 +18,7 @@ def play
 
   while true
     game.draw_board(checkboard)
+    game.update_state
     player = game.player
 
     return if game_over?(board, player)
