@@ -20,6 +20,11 @@ class Game
     @board.update_moves(@player)
   end
 
+  def update_state
+    set_player
+    @board.update_moves(@player)
+  end
+
   def set_player
     case @player
     when WHITE
@@ -31,11 +36,9 @@ class Game
     end
   end
 
-  # The input is an array with the position of the piece and the move to make
   # The move has to be in the set of moves of the piece, and it should not cause a self-check
-  def legal_input?(input)
-    piece = @board.find_piece(input[0])
-    piece&.moves.include?(input[1]) && !check?(simulate_new_board(piece, input[1]))
+  def legal_input?(piece, move)
+    piece.moves.include?(move) && !check?(simulate_new_board(piece, move))
   end
 
   def promote(pawn, piece)
@@ -62,7 +65,4 @@ class Game
     print '|'
     puts ''
   end
-
-  # Utility method
-
 end
