@@ -4,7 +4,6 @@ require_relative './game'
 require_relative './utility'
 
 def play
-  greet_prompt
   game = try_loading_game
 
   if game.nil?
@@ -15,8 +14,10 @@ def play
   board = game.board # The board object
   checkboard = board.board # The 2D array reppresentation of the board
 
+  greet_prompt
+
   while true
-    draw_board(checkboard)
+    game.draw_board(checkboard)
     player = game.player
 
     return if game_over?(board, player)
