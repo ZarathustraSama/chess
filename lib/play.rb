@@ -4,6 +4,7 @@ require_relative './game'
 require_relative './utility'
 
 def play
+  greet_prompt
   game = try_loading_game
 
   if game.nil?
@@ -11,15 +12,38 @@ def play
     game.initial_state
   end
 
-  board_o = game.board # The board object
-  board_a = board_o.board # The 2D array reppresentation of the board
+  board = game.board # The board object
+  checkboard = board.board # The 2D array reppresentation of the board
 
   while true
-    draw_board(board_a)
+    draw_board(checkboard)
     player = game.player
+
+    return if game_over?(board, player)
+
+    check_prompt if board.check?(player)
     input = ask_user_move(player)
-    if legal_input?(input)
-      board_o.move_piece
+    piece = board.find_piece(input[0])
+
+    unless piece.nil?
+      move = input[1]
+
+      if legal_input?(piece, move)
+        board.move_piece(piece, move)
+      end
+    end
+  end
+end
+
+def game_over?(board, player)
+  opponent = player == WHITE ? BLACK : WHITE
+  if board.game_over?(player)
+    if board.mate?(player)
+      checkmate_prompt(opponent, player)
+      true
+    elsif board.stalemate?(player)
+      stalemate_prompt(opponent, player)
+      true
     end
   end
 end
