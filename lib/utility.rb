@@ -67,22 +67,39 @@ def load_board(saved_board)
 end
 
 # Methods for prompting the user
-def greet_user
+def greet_prompt
   puts 'Input the location of the piece you want to move and where you want to move it'
   puts '(Use algebraic notation)'
 end
 
-def draw_alert
+def draw_prompt
   puts 'A player can now claim a draw, since the requirements have been met'
 end
 
-def comply_alert
+def comply_prompt
   puts 'Please follow the instructions'
 end
 
+def check_prompt(player)
+  puts "#{player} is in check!"
+end
 
-AFFIRMATIVE_INPUT = ['yes', 'y']
-NEGATIVE_INPUT = ['no', 'n']
+def checkmate_prompt(winner, loser)
+  puts "Checkmate for #{loser}! #{winner.capitalize} wins!"
+end
+
+def stalemate_prompt(winner, loser)
+  puts "Stalemate for #{loser}! #{winner.capitalize} wins!"
+end
+
+def draw_alert
+  puts 'As per check regulations, a draw has been claimed'
+end
+
+
+AFFIRMATIVE_INPUT = ['yes', 'y'].freeze
+NEGATIVE_INPUT = ['no', 'n'].freeze
+DRAW = 'draw'.freeze
 FILES = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7 }.freeze
 RANKS = { "1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0 }.freeze
 
@@ -97,7 +114,7 @@ def ask_user_load
       return false
     end
 
-    comply_alert
+    comply_prompt
   end
 end
 
@@ -108,7 +125,7 @@ def ask_user_move(player)
     positions = [to_index(input[0]), to_index(input[1])]
     return positions unless positions.any?(nil)
 
-    comply_alert
+    comply_prompt
   end
 end
 
