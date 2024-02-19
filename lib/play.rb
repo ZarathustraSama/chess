@@ -2,6 +2,7 @@
 
 require_relative './game'
 require_relative './utility'
+require_relative './save_load'
 
 def play
   game = try_loading_game
@@ -14,7 +15,6 @@ def play
   board = game.board # The board object
   checkboard = board.board # The 2D array reppresentation of the board
   player = game.player
-  greet_prompt
   game.draw_board(checkboard)
 
   while true
@@ -23,30 +23,17 @@ def play
 
     check_prompt if board.check?(player)
     puts "#{player} moves"
-    input = ask_user_move
+    input = ask_user_input(game)
 
-    case input
-    when QUIT
-      exit
-    when DRAW
-      return draw_alert if game.can_claim_draw?
-    when SAVE
-
-    end
-
-    piece = board.find_piece(input[0])
-    unless piece.nil?
-      move = input[1]
-
-      if game.legal_move?(piece, move, player)
-        board.move_piece(piece, move)
-        promote(piece, ask_user_promotion_piece) if piece.instance_of?(::Pawn) && piece.can_promote?
-        game.update_state
-        game.draw_board(checkboard)
-        player = game.player
-      else
-        comply_prompt
-      end
+    piece, move = board.find_piece(input[0]), input[1]
+    if !piece.nil? && game.legal_move?(piece, move, player)
+      board.move_piece(piece, move)
+      game.promote(piece, ask_user_promotion_piece) if piece&:can_promote?
+      game.update_state
+      game.draw_board(checkboard)
+      player = game.player
+    else
+      illegal_move_prompt
     end
   end
 end
