@@ -2,8 +2,6 @@
 
 require_relative './board'
 
-
-
 # This is where interaction of the pieces and changes to the board takes place
 class Game
   attr_accessor :board, :player
@@ -37,14 +35,25 @@ class Game
   end
 
   # The move has to be in the set of moves of the piece, and it should not cause a self-check
-  def legal_input?(piece, move)
-    piece.moves.include?(move) && !check?(simulate_new_board(piece, move))
+  def legal_move?(piece, move, player)
+    piece.moves.compact.include?(move) && !@board.simulate_new_board(piece, move).check?(player)
+  end
+
+  def can_claim_draw?
+    @moves_to_draw >= 50 # || repetition of 3 moves
   end
 
   def promote(pawn, piece)
     @board.board[pawn.position[0]][pawn.position[1]] = Object.const_get(piece).new(pawn.position, pawn.color)
   end
 
+  def update_counter(piece, move)
+    unless piece.instance_of(::Pawn) && @board.empty?(move)
+      @moves_to_draw += 1
+    else
+      @moves_to_draw = 0
+    end
+  end
 
   def draw_board(board = @board.board)
     puts ''

@@ -13,25 +13,39 @@ def play
 
   board = game.board # The board object
   checkboard = board.board # The 2D array reppresentation of the board
-
+  player = game.player
   greet_prompt
+  game.draw_board(checkboard)
 
   while true
-    game.draw_board(checkboard)
     game.update_state
-    player = game.player
-
     return if game_over?(board, player)
 
     check_prompt if board.check?(player)
-    input = ask_user_move(player)
-    piece = board.find_piece(input[0])
+    puts "#{player} moves"
+    input = ask_user_move
 
+    case input
+    when QUIT
+      exit
+    when DRAW
+      return draw_alert if game.can_claim_draw?
+    when SAVE
+
+    end
+
+    piece = board.find_piece(input[0])
     unless piece.nil?
       move = input[1]
 
-      if legal_input?(piece, move)
+      if game.legal_move?(piece, move, player)
         board.move_piece(piece, move)
+        promote(piece, ask_user_promotion_piece) if piece.instance_of?(::Pawn) && piece.can_promote?
+        game.update_state
+        game.draw_board(checkboard)
+        player = game.player
+      else
+        comply_prompt
       end
     end
   end
