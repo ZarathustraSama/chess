@@ -7,44 +7,43 @@ require_relative './board'
 # Methods for prompting the user
 def greet_prompt
   puts 'Input the location of the piece you want to move and where you want to move it'
-  puts '(Use algebraic notation, use "help" for some extra info!)'
+  puts "(Use algebraic notation, use 'help' for some extra info!)\n"
 end
 
 def draw_prompt
-  puts 'A player can now claim a draw'
+  puts "A player can now claim a draw\n"
 end
 
 def comply_prompt
-  puts 'Please follow the instructions'
+  puts "Please follow the instructions\n"
 end
 
 def illegal_move_prompt
-  puts 'Illegal move!'
+  puts "Illegal move!\n"
 end
 
 def check_prompt(player)
-  puts "#{player} is in check!"
+  puts "#{player} is in check!\n"
 end
 
 def checkmate_prompt(winner, loser)
-  puts "Checkmate for #{loser}! #{winner.capitalize} wins!"
+  puts "Checkmate for #{loser}! #{winner.capitalize} wins!\n"
 end
 
 def stalemate_prompt(winner, loser)
-  puts "Stalemate for #{loser}! #{winner.capitalize} wins!"
+  puts "Stalemate for #{loser}! #{winner.capitalize} wins!\n"
 end
 
 def draw_alert
-  puts 'As per check regulations, a draw has been claimed'
+  puts "As per check regulations, a draw has been claimed\n"
   exit
 end
 
 def help_prompt
-  puts 'Here some useful commands to know:'
-  puts ''
+  puts "Here some useful commands to know:\n"
   puts 'draw: if the conditions are met, a player can claim a draw'
   puts 'save: save the current game'
-  puts 'quit: exit the programm'
+  puts "quit: exit the programm\n"
 end
 
 
@@ -70,13 +69,13 @@ def ask_user_input(game)
   while true
     input = get_input
     case input
-    when 'Draw'
+    when 'draw'
       draw_alert if game.can_claim_draw?
-    when 'Help'
+    when 'help'
       help_prompt
-    when 'Quit'
+    when 'quit'
       exit
-    when 'Save'
+    when 'save'
       save_game(game)
     else
       positions = [to_index(input.split[0]), to_index(input.split[1])]
