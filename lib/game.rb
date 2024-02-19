@@ -25,7 +25,12 @@ class Game
 
   # The move has to be in the set of moves of the piece, and it should not cause a self-check
   def legal_move?(piece, move, player)
-    piece.moves.compact.include?(move) && !@board.simulate_new_board(piece, move).check?(player)
+    piece.legal_move?(move) && !next_check?(piece, move, player)
+  end
+
+  # Simulates a new board and verifies if a check occurs
+  def next_check?(piece, move, player)
+    @board.simulate_new_board(piece, move).check?(player)
   end
 
   def can_claim_draw?
