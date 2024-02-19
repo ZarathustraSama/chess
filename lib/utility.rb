@@ -80,6 +80,10 @@ def comply_prompt
   puts 'Please follow the instructions'
 end
 
+def illegal_move_prompt
+  puts 'Illegal move!'
+end
+
 def check_prompt(player)
   puts "#{player} is in check!"
 end
@@ -96,12 +100,23 @@ def draw_alert
   puts 'As per check regulations, a draw has been claimed'
 end
 
+def save_prompt
+  puts 'Game has been saved'
+end
+
+def promotion_prompt
+  puts 'Select which piece the pawn will promote into'
+end
+
 
 AFFIRMATIVE_INPUT = ['yes', 'y'].freeze
 NEGATIVE_INPUT = ['no', 'n'].freeze
 DRAW = 'draw'.freeze
+SAVE = 'save'.freeze
+QUIT = 'quit'.freeze
 FILES = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7 }.freeze
 RANKS = { "1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0 }.freeze
+PROMOTABLE_PIECES = ['Rook', 'Queen', 'Knight', 'Bishop']
 
 # Methods for the user input
 def ask_user_load
@@ -113,20 +128,34 @@ def ask_user_load
     elsif NEGATIVE_INPUT.include?(input)
       return false
     end
-
     comply_prompt
   end
 end
 
-def ask_user_move(player)
+def ask_user_move
   while true
-    puts "#{player} moves"
-    input = get_input.split
-    positions = [to_index(input[0]), to_index(input[1])]
-    return positions unless positions.any?(nil)
-
+    input = get_input
+    case input
+    when SAVE
+      return SAVE
+    when DRAW
+      return DRAW
+    when QUIT
+      return QUIT
+    else
+      positions = [to_index(input.split[0]), to_index(input.split[1])]
+      return positions unless positions.any?(nil)
+    end
     comply_prompt
   end
+end
+
+def ask_user_promotion_piece
+  promotion_prompt
+  input = get_input.downcase.capitalize
+  return input if PROMOTABLE_PIECES.include?(input)
+
+  comply_prompt
 end
 
 def get_input
