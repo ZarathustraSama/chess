@@ -6,7 +6,7 @@ require_relative './piece'
 class Knight < Piece
   def initialize(*args)
     super
-    @symbol = @color == WHITE ? "\u2658" : "\u265E"
+    @symbol = @color == WHITE ? "\u265E" : "\u2658"
   end
 
   def generate_legal_moves(board)

@@ -6,7 +6,7 @@ require_relative './piece'
 class Bishop < Piece
   def initialize(*args)
     super
-    @symbol = @color == WHITE ? "\u2657" : "\u265D"
+    @symbol = @color == WHITE ? "\u265D" : "\u2657"
   end
 
   def generate_legal_moves(board)

@@ -6,7 +6,7 @@ require_relative './piece'
 class Queen < Piece
   def initialize(*args)
     super
-    @symbol = @color == WHITE ? "\u2655" : "\u265B"
+    @symbol = @color == WHITE ?  "\u265B" : "\u2655"
   end
 
   # A necessary repetition from the bishop/rook classes in order to avoid object creations

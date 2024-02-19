@@ -6,7 +6,7 @@ require_relative './piece'
 class Rook < Piece
   def initialize(*args)
     super
-    @symbol = @color == WHITE ? "\u2656" : "\u265C"
+    @symbol = @color == WHITE ? "\u265C" : "\u2656"
   end
 
   def generate_legal_moves(board)
