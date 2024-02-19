@@ -25,7 +25,7 @@ class Game
 
   # The move has to be in the set of moves of the piece, and it should not cause a self-check
   def legal_move?(piece, move, player)
-    piece.legal_move?(move) && !next_check?(piece, move, player)
+    piece.legal_move?(move, player) && !next_check?(piece, move, player)
   end
 
   # Simulates a new board and verifies if a check occurs
