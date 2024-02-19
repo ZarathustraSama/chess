@@ -23,17 +23,6 @@ class Game
     @board.update_moves(@player)
   end
 
-  def set_player
-    case @player
-    when WHITE
-      @player = BLACK
-    when BLACK
-      @player = WHITE
-    else
-      @player = WHITE
-    end
-  end
-
   # The move has to be in the set of moves of the piece, and it should not cause a self-check
   def legal_move?(piece, move, player)
     piece.moves.compact.include?(move) && !@board.simulate_new_board(piece, move).check?(player)
@@ -62,6 +51,17 @@ class Game
   end
 
   private
+
+  def set_player
+    case @player
+    when WHITE
+      @player = BLACK
+    when BLACK
+      @player = WHITE
+    else
+      @player = WHITE
+    end
+  end
 
   def draw_row(row)
     row.each do |square|
