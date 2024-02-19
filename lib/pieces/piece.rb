@@ -21,6 +21,10 @@ class Piece
     @moved = true
   end
 
+  def legal_move?(move, player)
+    @moves.compact.include?(move) && @color == player
+  end
+
   # Utility method for rook, bishop and queen moves
   def create_moves(board, move)
     next_p = move(move)
