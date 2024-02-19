@@ -7,11 +7,11 @@ require_relative './board'
 # Methods for prompting the user
 def greet_prompt
   puts 'Input the location of the piece you want to move and where you want to move it'
-  puts "(Use algebraic notation, use 'help' for some extra info!)\n"
+  puts "(Use algebraic notation, use 'help' for some extra info!)\n\n"
 end
 
 def draw_prompt
-  puts "A player can now claim a draw\n"
+  puts "A player can now claim a draw\n\n"
 end
 
 def comply_prompt
@@ -19,31 +19,31 @@ def comply_prompt
 end
 
 def illegal_move_prompt
-  puts "Illegal move!\n"
+  puts "\nIllegal move!\n\n"
 end
 
 def check_prompt(player)
-  puts "#{player} is in check!\n"
+  puts "#{player} is in check!\n\n"
 end
 
 def checkmate_prompt(winner, loser)
-  puts "Checkmate for #{loser}! #{winner.capitalize} wins!\n"
+  puts "Checkmate for #{loser}! #{winner.capitalize} wins!\n\n"
 end
 
 def stalemate_prompt(winner, loser)
-  puts "Stalemate for #{loser}! #{winner.capitalize} wins!\n"
+  puts "Stalemate for #{loser}! #{winner.capitalize} wins!\n\n"
 end
 
 def draw_alert
-  puts "As per check regulations, a draw has been claimed\n"
+  puts "As per check regulations, a draw has been claimed\n\n"
   exit
 end
 
 def help_prompt
-  puts "Here some useful commands to know:\n"
+  puts "Here some useful commands to know:\n\n"
   puts 'draw: if the conditions are met, a player can claim a draw'
   puts 'save: save the current game'
-  puts "quit: exit the programm\n"
+  puts "quit: exit the programm\n\n"
 end
 
 
