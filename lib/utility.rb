@@ -80,8 +80,9 @@ def ask_user_input(game)
     else
       positions = [to_index(input.split[0]), to_index(input.split[1])]
       return positions unless positions.any?(nil)
+
+      comply_prompt
     end
-    comply_prompt
   end
 end
 
