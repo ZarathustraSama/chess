@@ -68,7 +68,7 @@ class Board
 
   def move_piece(piece, position)
     @board[piece.position[0]][piece.position[1]] = EMPTY
-    add(piece.class.name, position, piece.color, piece.symbol)
+    add(piece.class.name, position, piece.color, true)
   end
 
   # Returns a fake board where the piece has been moved
