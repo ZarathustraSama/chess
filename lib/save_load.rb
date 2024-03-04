@@ -15,7 +15,7 @@ def save_game(game)
 end
 
 def load_game
-  return if !saved_game || !ask_user_load
+  return if !saved_game? || !ask_user_load
 
   puts 'Now loading...'
   File.open('saves/game.json', 'r') do |file|
