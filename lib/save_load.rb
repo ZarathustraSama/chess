@@ -15,15 +15,12 @@ def save_game(game)
 end
 
 def load_game
+  return if !saved_game || !ask_user_load
+
   puts 'Now loading...'
   File.open('saves/game.json', 'r') do |file|
     game_from_json(file.gets)
   end
-end
-
-# check for saved game and ask user if they want to use it
-def try_loading_game
-  load_game if saved_game? && ask_user_load
 end
 
 def saved_game?
