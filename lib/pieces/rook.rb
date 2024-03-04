@@ -13,6 +13,6 @@ class Rook < Piece
   end
 
   def generate_legal_moves(board)
-    @moves = Moves::rook_moves(board)
+    @moves = rook_moves(board)
   end
 end

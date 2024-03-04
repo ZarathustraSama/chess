@@ -13,6 +13,6 @@ class Bishop < Piece
   end
 
   def generate_legal_moves(board)
-    @moves = Moves::bishop_moves(board)
+    @moves = bishop_moves(board)
   end
 end

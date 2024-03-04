@@ -13,6 +13,6 @@ class Queen < Piece
   end
 
   def generate_legal_moves(board)
-    @moves = Moves::queen_moves(board)
+    @moves = queen_moves(board)
   end
 end

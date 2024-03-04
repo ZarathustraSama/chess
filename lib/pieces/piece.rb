@@ -2,7 +2,7 @@
 
 # Every component of the board will inherit this class
 class Piece
-  attr_reader :color, :moved
+  attr_reader :color, :moved, :symbol
   attr_accessor :position, :moves
 
   def initialize(position, color, moved, moves)
@@ -10,6 +10,7 @@ class Piece
     @color = color
     @moved = moved
     @moves = moves
+    @symbol = nil
   end
 
   def move(move, position = @position)
