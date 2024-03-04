@@ -78,6 +78,7 @@ def ask_user_input(game)
     when 'save'
       save_game(game)
     else
+      next if input.empty?
       positions = [to_index(input.split[0]), to_index(input.split[1])]
       return positions unless positions.any?(nil)
 
