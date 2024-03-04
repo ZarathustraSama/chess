@@ -19,16 +19,4 @@ class Piece
   def legal_move?(move, player)
     @moves.compact.include?(move) && @color == player
   end
-
-  # Utility method for rook, bishop and queen moves
-  def create_moves(board, move)
-    next_p = move(move)
-    moves = []
-    while board.inside?(next_p) && board.empty?(next_p)
-      moves << next_p
-      next_p = move(move, next_p)
-    end
-    moves << next_p if board.inside?(next_p) && board.board[next_p[0]][next_p[1]].color != @color
-    moves
-  end
 end
