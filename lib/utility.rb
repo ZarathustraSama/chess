@@ -109,5 +109,5 @@ def to_index(string)
 end
 
 def valid_input?(input)
-  input.size == 2
+  input.size == 2 unless input.nil?
 end
