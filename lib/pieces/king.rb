@@ -10,10 +10,25 @@ class King < Piece
   end
 
   def generate_legal_moves(board)
+    @moves = generate_c_moves(board)
+    @moves << short_castling
+    @moves << long_castling
+    @moves
+  end
+
+  def generate_c_moves(board)
     m = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [-1, 1], [1, -1]]
-    @moves = m.map do |move|
+    m.map do |move|
       move(move) if board.inside?(move(move)) && (board.empty?(move(move)) || board.color?(move(move)) != @color)
-    end.compact
+    end
+  end
+
+  def short_castling
+    @color == BLACK ? [0, 6] : [7, 6]
+  end
+
+  def long_castling
+    @color == BLACK ? [0, 1] : [7, 1]
   end
 
   def short_castling?(board)
@@ -37,11 +52,12 @@ class King < Piece
     # king/rook hasn't moved king is not in check
     return false if @moved || rook.moved || board.check?(@color)
 
-    # squares between are not "check-zones" && empty
-    b = board.simulate_new_board(self, @position)
-    squares.each do |move|
-      return false unless b.empty?(move)
+    # squares between are empty
+    squares.each { |move| return false unless board.empty?(move) }
 
+    # squares between are not "check-zones"
+    b = Marshal.load(Marshal.dump(board))
+    squares.each do |move|
       b.move_piece(self, move)
       return false if b.check?(@color)
     end
