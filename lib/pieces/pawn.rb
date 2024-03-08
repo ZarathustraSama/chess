@@ -9,28 +9,26 @@ BLACK_CAPTURES = [[1, 1], [1, -1]].freeze
 
 # The pawn piece
 class Pawn < Piece
-  attr_accessor :double_step_taken
-
   def initialize(*args)
     super
     @symbol = @color == WHITE ? "\u265F" : "\u2659"
-    @initial_position = @position
-    @double_step_taken = false
+  end
+
+  def double_step?(rank)
+    @color == WHITE ? rank == 4 : rank == 3
   end
 
   def generate_legal_moves(board)
-    @moves = @color == 'White' ? w_moves(board) : b_moves(board)
+    @moves = @color == WHITE ? w_moves(board) : b_moves(board)
   end
 
   def generate_c_moves(board)
-    @color == 'White' ? capture(board, WHITE_CAPTURES) : capture(board, BLACK_CAPTURES)
+    @color == WHITE ? capture(board, WHITE_CAPTURES) : capture(board, BLACK_CAPTURES)
   end
 
   def can_promote?
-    @color == 'White' ? @position[0].zero? : @position[0] == 7
+    @color == WHITE ? @position[0].zero? : @position[0] == 7
   end
-
-  private
 
   def w_moves(board)
     step(board, WHITE_STEPS) + capture(board, WHITE_CAPTURES)
@@ -43,7 +41,7 @@ class Pawn < Piece
   def step(board, moves)
     m = []
     m << move(moves[0]) if board.empty?(move(moves[0]))
-    m << move(moves[1]) if can_double_step? && board.empty?(move(moves[1]))
+    m << move(moves[1]) if !@moved && board.empty?(move(moves[1]))
     m
   end
 
@@ -57,32 +55,20 @@ class Pawn < Piece
     m
   end
 
-  def can_double_step?
-    @position == @initial_position
-  end
-
-  def double_step_taken!
-    @double_step_taken = true
-  end
-
   def en_passante(board)
     # capturing pawn has advanced 3 ranks
-    return unless advanced_3_ranks?
+    return nil unless advanced_3_ranks?
 
     # pawn-to-be-captured has made a double step next to such pawn
     # capture chance is only the turn immediately to this double step
-    if can_en_passante?(board[@position[0]][@position[1] + 1])
+    if [@position[0], @position[1] + 1] == board.double_step_pawn
       @color == BLACK ? move([1, 1]) : move([-1, 1])
-    elsif can_en_passante?(board[@position[0]][@position[1] - 1])
+    elsif [@position[0], @position[1] - 1] == board.double_step_pawn
       @color == BLACK ? move([1, -1]) : move([-1, -1])
     end
   end
 
-  def can_en_passante?(square)
-    square.instance_of?(::Pawn) && square&.double_step_taken
-  end
-
   def advanced_3_ranks?
-    (@position[0] - @initial_position[0]) == (-3 || 3)
+    @color == WHITE ? @position[0] == 3 : @position[0] == 4
   end
 end
