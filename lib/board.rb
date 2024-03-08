@@ -14,10 +14,11 @@ BLACK = 'Black'
 # The chess board
 # Every component that only "snapshots" the board's status, is here
 class Board
-  attr_accessor :board
+  attr_accessor :board, :double_step_pawn
 
   def initialize
     @board = Array.new(8) { Array.new(8) { EMPTY } }
+    @double_step_pawn = nil
   end
 
   def populate_board
@@ -42,8 +43,8 @@ class Board
   end
 
   def check?(color)
-    opposite_color = color == WHITE ? BLACK : WHITE
-    simulate_capture_positions(opposite_color).flatten(1).include?(find_king_position(color))
+    opponent_color = color == WHITE ? BLACK : WHITE
+    simulate_capture_positions(opponent_color).flatten(1).include?(find_king_position(color))
   end
 
   def stalemate?(color)
@@ -67,8 +68,29 @@ class Board
   end
 
   def move_piece(piece, position)
+    if piece.instance_of?(::Pawn)
+      capture_en_passante(piece, position) if position == piece.en_passante(self)
+    elsif piece.instance_of?(::King)
+      if position == piece.short_castling && piece.short_castling?(self)
+        short_castling(piece)
+      elsif position == piece.long_castling && piece.long_castling?(self)
+        long_castling(piece)
+      end
+    end
     @board[piece.position[0]][piece.position[1]] = EMPTY
     add(piece.class.name, position, piece.color, true)
+  end
+
+  def capture_en_passante(pawn, position)
+    pawn.color == BLACK ? @board[position[0] - 1][position[1]] = EMPTY : @board[position[0] + 1][position[1]] = EMPTY
+  end
+
+  def short_castling(king)
+    king.color == BLACK ? move_piece(find_piece([0, 7]), [0, 5]) : move_piece(find_piece([7, 7]), [7, 5])
+  end
+
+  def long_castling(king)
+    king.color == BLACK ? move_piece(find_piece([0, 0]), [0, 2]) : move_piece(find_piece([7, 0]), [7, 2])
   end
 
   # Returns a fake board where the piece has been moved
@@ -82,7 +104,9 @@ class Board
     @board[position[0]][position[1]]
   end
 
-  # def repetition_of_moves_rule?
+  def find_pieces(color)
+    @board.flatten.compact.select { |piece| piece.color == color }
+  end
 
   private
 
@@ -126,13 +150,9 @@ class Board
     @board.flatten.compact.select { |piece| piece.instance_of?(::King) && piece.color == color }.first.position
   end
 
-  def find_pieces(color)
-    @board.flatten.compact.select { |piece| piece.color == color }
-  end
-
   def simulate_capture_positions(color)
     find_pieces(color).map do |piece|
-      if piece.instance_of?(::Pawn)
+      if piece.instance_of?(::Pawn) || piece.instance_of?(::King)
         piece.generate_c_moves(self)
       else
         piece.generate_legal_moves(self)
