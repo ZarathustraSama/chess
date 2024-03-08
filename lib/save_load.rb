@@ -35,7 +35,8 @@ def game_to_json(game)
   JSON.dump ({
     :board => board_to_json(game.board.board),
     :player => game.player,
-    :moves_to_draw => game.moves_to_draw
+    :moves_to_draw => game.moves_to_draw,
+    :double_step_pawn => game.double_step_pawn
   })
 end
 
@@ -53,7 +54,7 @@ end
 
 def game_from_json(game_string)
   data = JSON.load game_string
-  Game.new(load_board(data['board']), data['player'], data['moves_to_draw'])
+  Game.new(load_board(data['board']), data['player'], data['moves_to_draw'], data['double_step_pawn'])
 end
 
 def load_board(saved_board)
