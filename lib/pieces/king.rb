@@ -11,8 +11,8 @@ class King < Piece
 
   def generate_legal_moves(board)
     @moves = generate_c_moves(board)
-    @moves << short_castling
-    @moves << long_castling
+    @moves << short_castling if short_castling?(board)
+    @moves << long_castling if long_castling?(board)
     @moves
   end
 
