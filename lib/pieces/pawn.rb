@@ -14,20 +14,12 @@ class Pawn < Piece
     @symbol = @color == WHITE ? "\u265F" : "\u2659"
   end
 
-  def double_step?(rank)
-    @color == WHITE ? rank == 4 : rank == 3
-  end
-
   def generate_legal_moves(board)
     @moves = @color == WHITE ? w_moves(board) : b_moves(board)
   end
 
   def generate_c_moves(board)
     @color == WHITE ? capture(board, WHITE_CAPTURES) : capture(board, BLACK_CAPTURES)
-  end
-
-  def can_promote?
-    @color == WHITE ? @position[0].zero? : @position[0] == 7
   end
 
   def w_moves(board)
@@ -66,6 +58,14 @@ class Pawn < Piece
     elsif [@position[0], @position[1] - 1] == board.double_step_pawn
       @color == BLACK ? move([1, -1]) : move([-1, -1])
     end
+  end
+
+  def double_step?(rank)
+    @color == WHITE ? rank == 4 : rank == 3
+  end
+
+  def can_promote?
+    @color == WHITE ? @position[0].zero? : @position[0] == 7
   end
 
   def advanced_3_ranks?
