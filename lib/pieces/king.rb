@@ -52,12 +52,11 @@ class King < Piece
     # king/rook hasn't moved king is not in check
     return false if @moved || rook.moved || board.check?(@color)
 
-    # squares between are empty
-    squares.each { |move| return false unless board.empty?(move) }
-
-    # squares between are not "check-zones"
+    # squares between are not "check-zones" nor empty
     b = Marshal.load(Marshal.dump(board))
     squares.each do |move|
+      return false unless board.empty?(move)
+
       b.move_piece(self, move)
       return false if b.check?(@color)
     end
