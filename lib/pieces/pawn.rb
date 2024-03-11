@@ -22,6 +22,32 @@ class Pawn < Piece
     @color == WHITE ? capture(board, WHITE_CAPTURES) : capture(board, BLACK_CAPTURES)
   end
 
+  def en_passante(board)
+    # capturing pawn has advanced 3 ranks
+    return nil unless advanced_3_ranks?
+
+    # pawn-to-be-captured has made a double step next to such pawn
+    if [@position[0], @position[1] + 1] == board.double_step_pawn
+      @color == BLACK ? move([1, 1]) : move([-1, 1])
+    elsif [@position[0], @position[1] - 1] == board.double_step_pawn
+      @color == BLACK ? move([1, -1]) : move([-1, -1])
+    end
+  end
+
+  def double_step?(rank)
+    @color == WHITE ? rank == 4 : rank == 3
+  end
+
+  def can_promote?
+    @color == WHITE ? @position[0].zero? : @position[0] == 7
+  end
+
+  def advanced_3_ranks?
+    @color == WHITE ? @position[0] == 3 : @position[0] == 4
+  end
+
+  private
+
   def w_moves(board)
     step(board, WHITE_STEPS) + capture(board, WHITE_CAPTURES)
   end
@@ -45,29 +71,5 @@ class Pawn < Piece
     end
     m << en_passante(board)
     m
-  end
-
-  def en_passante(board)
-    # capturing pawn has advanced 3 ranks
-    return nil unless advanced_3_ranks?
-
-    # pawn-to-be-captured has made a double step next to such pawn
-    if [@position[0], @position[1] + 1] == board.double_step_pawn
-      @color == BLACK ? move([1, 1]) : move([-1, 1])
-    elsif [@position[0], @position[1] - 1] == board.double_step_pawn
-      @color == BLACK ? move([1, -1]) : move([-1, -1])
-    end
-  end
-
-  def double_step?(rank)
-    @color == WHITE ? rank == 4 : rank == 3
-  end
-
-  def can_promote?
-    @color == WHITE ? @position[0].zero? : @position[0] == 7
-  end
-
-  def advanced_3_ranks?
-    @color == WHITE ? @position[0] == 3 : @position[0] == 4
   end
 end
