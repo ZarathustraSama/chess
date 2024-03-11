@@ -21,16 +21,14 @@ class Game
   def update_state(piece, move)
     update_counter(piece, move)
     update_pawn(board.move_piece(piece, move), move)
-    @double_step_pawn = nil
     set_player
     @board.update_moves(@player)
-    @board.find_piece(@double_step_pawn) unless @double_step_pawn.nil?
   end
 
   def update_pawn(pawn, move)
     return unless pawn.instance_of?(::Pawn)
 
-    @double_step_pawn = pawn.position if pawn.double_step?(move[0])
+    @double_step_pawn = pawn.double_step?(move[0]) ? pawn.position : nil
     @board.double_step_pawn = @double_step_pawn
     promote(pawn)
   end
