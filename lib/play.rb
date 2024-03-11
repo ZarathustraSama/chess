@@ -21,7 +21,7 @@ def play
     check_prompt(player) if board.check?(player)
     puts "#{player} moves"
     input = ask_user_input(game)
-    piece, move = board.find_piece(input[0]), input[1]
+    piece, move = board.piece(input[0]), input[1]
     if game.legal_move?(piece, move, player)
       game.update_state(piece, move)
       clean_terminal
