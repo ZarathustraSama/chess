@@ -162,7 +162,7 @@ class Board
 
   def legal_moves_left?(color)
     find_pieces(color).each do |piece|
-      piece.moves.each do |move|
+      piece.moves.compact.each do |move|
         return true unless simulate_new_board(piece, move).check?(color)
       end
     end
