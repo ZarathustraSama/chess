@@ -43,16 +43,12 @@ class Pawn < Piece
       c_square = move(move)
       m << c_square if board.inside?(c_square) && !board.empty?(c_square) && board.color?(c_square) != @color
     end
-    m << en_passante(board)
+    m << en_passante(board) if advanced_3_ranks?
     m
   end
 
   def en_passante(board)
-    # capturing pawn has advanced 3 ranks
-    return nil unless advanced_3_ranks?
-
     # pawn-to-be-captured has made a double step next to such pawn
-    # capture chance is only the turn immediately to this double step
     if [@position[0], @position[1] + 1] == board.double_step_pawn
       @color == BLACK ? move([1, 1]) : move([-1, 1])
     elsif [@position[0], @position[1] - 1] == board.double_step_pawn
